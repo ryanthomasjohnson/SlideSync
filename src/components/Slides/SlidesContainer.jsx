@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PDF from 'reactjs-pdf';
+import { Segment } from 'semantic-ui-react';
 
 import firebase from '../../firebase';
 import SlidesHeader from './SlidesHeader';
@@ -97,14 +98,18 @@ export default class SlidesContainer extends React.Component {
 
     return (
       <div className="SlidesContainer">
-        <SlidesHeader
-          title={title}
-          slidePos={slidePos}
-          numPages={numPages}
-          handlePrev={() => { this.handlePrev(); }}
-          handleNext={() => { this.handleNext(); }}
-        />
-        {this.renderPdfDocument()}
+        <Segment.Group>
+          <SlidesHeader
+            title={title}
+            slidePos={slidePos}
+            numPages={numPages}
+            handlePrev={() => { this.handlePrev(); }}
+            handleNext={() => { this.handleNext(); }}
+          />
+          <Segment>
+            {this.renderPdfDocument()}
+          </Segment>
+        </Segment.Group>
       </div>);
   }
 }

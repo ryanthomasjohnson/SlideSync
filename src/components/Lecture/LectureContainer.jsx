@@ -18,7 +18,7 @@ export default class LectureContainer extends React.Component {
 
     return (
       <div className="LectureContainer">
-        <Grid columns={2}>
+        <Grid columns={2} padded>
           <Grid.Row>
             <Grid.Column>
               <div ref={this.getWidth}>
