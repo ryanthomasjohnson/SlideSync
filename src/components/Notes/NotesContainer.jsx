@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import firebase from '../../firebase';
+// import PropTypes from 'prop-types';
 import { Editor, EditorState, convertToRaw, convertFromRaw } from 'draft-js';
-import { merge } from 'rxjs';
+// import { merge } from 'rxjs';
+import firebase from '../../firebase';
 
 export default class NotesContainer extends React.Component {
 
@@ -23,8 +23,8 @@ export default class NotesContainer extends React.Component {
     const slidesRef = firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf'); //.orderByKey().limitToLast(100);
     slidesRef.onSnapshot((slide) => {
       this.setState({ notes: slide.data().notes });
-      let rawState = slide.data().notes;
-      let contentState = convertFromRaw(rawState);
+      const rawState = slide.data().notes;
+      const contentState = convertFromRaw(rawState);
       let editorState = EditorState.createWithContent(contentState);
       if (this.selectionState !== null) {
         editorState = EditorState.forceSelection(editorState, this.selectionState)
@@ -34,13 +34,15 @@ export default class NotesContainer extends React.Component {
   }
 
   componentDidUpdate() {
-    this.textRef.current.selectionEnd = this.state.cursorPosition;
-    this.textRef.current.selectionStart = this.state.cursorPosition;
+    const { cursorPosition } = this.state;
+    this.textRef.current.selectionEnd = cursorPosition;
+    this.textRef.current.selectionStart = cursorPosition;
   }
 
   onChange(editorState) {
-    let rawState = convertToRaw(editorState.getCurrentContent());
-    let selectionState = editorState.getSelection();
+
+    const rawState = convertToRaw(editorState.getCurrentContent());
+    const selectionState = editorState.getSelection();
     this.selectionState = selectionState;
 
     firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf').set({ notes: rawState }, { merge: true });
@@ -53,7 +55,6 @@ export default class NotesContainer extends React.Component {
   }
 
 
-
   render() {
     const { notes, editorState } = this.state;
     return (
@@ -64,4 +65,3 @@ export default class NotesContainer extends React.Component {
       </div>);
   }
 }
-
