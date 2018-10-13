@@ -7,9 +7,11 @@ export default class NotesContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: 'This is notes'
+      notes: 'Loading notes...',
+      cursorPosition: 0
     };
-    // setText = setText.bind(this);
+    this.textRef = React.createRef();
+    this.setText = this.setText.bind(this);
   }
 
   componentDidMount() {
@@ -19,7 +21,13 @@ export default class NotesContainer extends React.Component {
     });
   }
 
+  componentDidUpdate() {
+    this.textRef.current.selectionEnd = this.state.cursorPosition;
+    this.textRef.current.selectionStart = this.state.cursorPosition;
+  }
+
   setText(event) {
+    this.setState({ cursorPosition: event.target.selectionEnd });
     firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf').set({ 'notes': event.target.value });
   }
 
@@ -28,7 +36,7 @@ export default class NotesContainer extends React.Component {
     return (
       <div className="NotesContainer">
         Notes Container
-        <textarea rows="4" cols="50" onInput={this.setText} value={notes} />
+        <textarea ref={this.textRef} rows="4" cols="50" onInput={this.setText} value={notes} />
 
       </div>);
   }
