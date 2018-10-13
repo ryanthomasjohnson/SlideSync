@@ -1,36 +1,51 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import {
+  Editor, EditorState, convertToRaw, convertFromRaw,
+} from 'draft-js';
+// import { merge } from 'rxjs';
 import firebase from '../../firebase';
 
 export default class NotesContainer extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      notes: 'This is notes'
+      editorState: EditorState.createEmpty(),
     };
-    // setText = setText.bind(this);
+    this.selectionState = null;
+    this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
-    const slidesRef = firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf'); //.orderByKey().limitToLast(100);
+    const slidesRef = firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf');
     slidesRef.onSnapshot((slide) => {
       this.setState({ notes: slide.data().notes });
+      const rawState = slide.data().notes;
+      const contentState = convertFromRaw(rawState);
+      let editorState = EditorState.createWithContent(contentState);
+      if (this.selectionState !== null) {
+        editorState = EditorState.forceSelection(editorState, this.selectionState);
+      }
+      this.setState({ editorState });
     });
   }
 
-  setText(event) {
-    firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf').set({ 'notes': event.target.value });
+  onChange(editorState) {
+    const rawState = convertToRaw(editorState.getCurrentContent());
+    const selectionState = editorState.getSelection();
+    this.selectionState = selectionState;
+    console.log(this.selectionState);
+
+    firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf').set({ notes: rawState }, { merge: true });
+    this.setState({ editorState });
   }
 
   render() {
-    const { notes } = this.state;
+    const { editorState } = this.state;
     return (
       <div className="NotesContainer">
         Notes Container
-        <textarea rows="4" cols="50" onInput={this.setText} value={notes} />
-
+        <Editor editorState={editorState} onChange={this.onChange} />
       </div>);
   }
 }
-
