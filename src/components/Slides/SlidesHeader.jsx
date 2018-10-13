@@ -2,24 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Header } from 'semantic-ui-react';
 
-export default (props) => {
-    const numPages = props.numPages === null ? 1 : props.numPages;
-    const slidePos = props.numPages === null ? 0 : props.slidePos;
-    const headerString = props.title + ' (' + (slidePos + 1) + ' of ' + numPages + ')';
-    return (
-        <Header size='large'>
-            {headerString}
-            <Button 
-             disabled={slidePos === 0} 
-             onClick={() => {props.handlePrev()}}>
-              Prev
-            </Button>
-            <Button 
-             disabled={props.numPages === null || slidePos === numPages - 1}
-             onClick={() => {props.handleNext()}}>
-              Next
-            </Button>
-        </Header>
-    );
+export default ({numPages, slidePos, title, handlePrev, handleNext}) => {
+  const numPagesClean = numPages === null ? 1 : numPages;
+  const slidePosClean = numPages === null ? 0 : slidePos;
+  const headerString = `${title} ( ${(slidePosClean + 1)} of ${numPagesClean})`;
+  return (
+    <Header size="large">
+      {headerString}
+      <Button
+        disabled={slidePosClean === 0}
+        onClick={() => { handlePrev(); }}
+      >
+        Prev
+      </Button>
+      <Button
+        disabled={numPages === null || slidePosClean === numPagesClean - 1}
+        onClick={() => { handleNext(); }}
+      >
+        Next
+      </Button>
+    </Header>
+  );
 };
-
