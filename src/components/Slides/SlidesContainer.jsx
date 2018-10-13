@@ -76,8 +76,16 @@ export default class SlidesContainer extends React.Component {
       <div className='SlidesContainer'>
         {this.renderPdfDocument()}
         Slide {this.state.slidePos + 1}
-        <Button onClick={() => {this.handlePrev()}}>Prev</Button>
-        <Button onClick={() => {this.handleNext()}}>Next</Button>
+        <Button 
+         disabled={this.state.slidePos === 0} 
+         onClick={() => {this.handlePrev()}}>
+          Prev
+        </Button>
+        <Button 
+         disabled={this.state.numPages === null || this.state.slidePos === this.state.numPages - 1}
+         onClick={() => {this.handleNext()}}>
+          Next
+        </Button>
       </div>);
   }
 }
