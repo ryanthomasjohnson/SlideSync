@@ -11,7 +11,7 @@ export default function App() {
       <Grid columns={2}>
         <Grid.Row>
           <Grid.Column>
-            <SlidesContainer />
+            <SlidesContainer title="WangTiling"/>
           </Grid.Column>
           <Grid.Column>
             <NotesContainer />
