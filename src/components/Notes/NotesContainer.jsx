@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import firebase from '../../firebase';
 import { Editor, EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import { merge } from 'rxjs';
 
 export default class NotesContainer extends React.Component {
 
@@ -42,13 +43,13 @@ export default class NotesContainer extends React.Component {
     let selectionState = editorState.getSelection();
     this.selectionState = selectionState;
 
-    firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf').set({ notes: rawState });
+    firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf').set({ notes: rawState }, { merge: true });
     this.setState({ editorState });
   }
 
   setText(event) {
     this.setState({ cursorPosition: event.target.selectionEnd });
-    firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf').set({ 'notes': event.target.value });
+    firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf').set({ notes: event.target.value }, { merge: true });
   }
 
 
