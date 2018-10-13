@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PDF from 'react-pdf-js';
-import firebase from '../../firebase';
 import { Button } from 'semantic-ui-react';
+
+import firebase from '../../firebase';
+
 
 export default class SlidesContainer extends React.Component {
 
@@ -56,9 +58,9 @@ export default class SlidesContainer extends React.Component {
     }
     console.log('Requesting page: ' + pageNum);
     return (
-      <PDF 
-       file={this.state.pdfUrl} 
-       onDocumentComplete={(p) => this.onDocumentLoad(p)} 
+      <PDF
+       file={this.state.pdfUrl}
+       onDocumentComplete={(p) => this.onDocumentLoad(p)}
        page={pageNum + 1} />
     );
   }
