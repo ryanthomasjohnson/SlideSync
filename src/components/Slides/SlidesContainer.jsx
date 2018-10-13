@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PDF from 'react-pdf-js';
+import PDF from 'reactjs-pdf';
 import firebase from '../../firebase';
 import { Button } from 'semantic-ui-react';
 
@@ -47,10 +47,12 @@ export default class SlidesContainer extends React.Component {
   renderPdfDocument() {
     console.log(this.state.pdfUrl);
     console.log(this.state);
+    // Don't try and render pdf until we get the url
     if (this.state.pdfUrl === null) {
       return (<div>Retrieving pdf location...</div>);
     }
     let pageNum = this.state.slidePos;
+    // Don't request the page until the document has loaded
     if(this.state.numPages === null) {
       pageNum = 0;
     }
@@ -59,7 +61,8 @@ export default class SlidesContainer extends React.Component {
       <PDF 
        file={this.state.pdfUrl} 
        onDocumentComplete={(p) => this.onDocumentLoad(p)} 
-       page={pageNum + 1} />
+       page={pageNum + 1}
+       scale={0.75} />
     );
   }
 
