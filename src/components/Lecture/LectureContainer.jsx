@@ -8,23 +8,13 @@ import SlidesContainer from '../Slides/SlidesContainer';
 export default class LectureContainer extends React.Component {
   slideColRef = React.createRef();
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      width: 0,
-    };
-  }
-
-  getWidth = (element) => {
-    if (element) {
-      this.setState({ width: element.getBoundingClientRect().width })
-    }
-  };
+  // constructor(props) {
+  //   super(props);
+  //
+  // }
 
   render() {
     const { match } = this.props;
-    const { width } = this.state;
 
     return (
       <div className="LectureContainer">
@@ -32,7 +22,7 @@ export default class LectureContainer extends React.Component {
           <Grid.Row>
             <Grid.Column>
               <div ref={this.getWidth}>
-                <SlidesContainer title="Lecture 9 - Wang Tiling.pdf" width={width} />
+                <SlidesContainer title="Lecture 9 - Wang Tiling.pdf" />
               </div>
             </Grid.Column>
             <Grid.Column>
