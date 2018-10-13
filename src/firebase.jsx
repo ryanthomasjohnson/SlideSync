@@ -1,4 +1,6 @@
-import firebase from 'firebase'
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/storage';
 
 // Initialize Firebase
 const config = {
@@ -7,8 +9,12 @@ const config = {
   databaseURL: 'https://mhacks-219303.firebaseio.com',
   projectId: 'mhacks-219303',
   storageBucket: 'mhacks-219303.appspot.com',
-  messagingSenderId: '92866787390'
+  messagingSenderId: '92866787390',
 };
 firebase.initializeApp(config);
+
+const firestore = firebase.firestore();
+const settings = { timestampsInSnapshots: true };
+firestore.settings(settings);
 
 export default firebase;
