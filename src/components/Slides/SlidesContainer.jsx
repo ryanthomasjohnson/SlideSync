@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PDF from 'reactjs-pdf';
-import { Button } from 'semantic-ui-react';
+import { Button, Header } from 'semantic-ui-react';
 
 import firebase from '../../firebase';
+import SlidesHeader from './SlidesHeader';
 
 
 export default class SlidesContainer extends React.Component {
@@ -79,18 +80,13 @@ export default class SlidesContainer extends React.Component {
   render() {
     return (
       <div className='SlidesContainer'>
+        <SlidesHeader 
+         title={this.props.title} 
+         slidePos={this.state.slidePos} 
+         numPages={this.state.numPages}
+         handlePrev={() => {this.handlePrev()}}
+         handleNext={() => {this.handleNext()}}/>
         {this.renderPdfDocument()}
-        Slide {this.state.slidePos + 1}
-        <Button 
-         disabled={this.state.slidePos === 0} 
-         onClick={() => {this.handlePrev()}}>
-          Prev
-        </Button>
-        <Button 
-         disabled={this.state.numPages === null || this.state.slidePos === this.state.numPages - 1}
-         onClick={() => {this.handleNext()}}>
-          Next
-        </Button>
       </div>);
   }
 }
