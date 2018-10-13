@@ -7,7 +7,7 @@ export default function IndexTable({ lectures }) {
   const tableBody = lectures.map(lecture => (
     <Table.Row>
       <Table.Cell verticalAlign="middle">
-        {lecture}
+        {lecture.id}
         <Button content="Join" floated="right" primary />
       </Table.Cell>
     </Table.Row>

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Grid } from 'semantic-ui-react';
 
+import firebase from '../../firebase';
 import IndexTable from './IndexTable';
 
 
@@ -9,12 +10,18 @@ export default class IndexContainer extends React.Component {
   constructor(props) {
     super(props);
 
+    const db = firebase.firestore();
+    this.collectionRef = db.collection('slides');
+
     this.state = {
-      lectures: [
-        'Wang Tiling',
-        'Cook-Levin Theorem',
-      ],
+      lectures: [],
     };
+  }
+
+  componentDidMount() {
+    this.collectionRef.get().then((collection) => {
+      this.setState({ lectures: collection.docs });
+    });
   }
 
   render() {
