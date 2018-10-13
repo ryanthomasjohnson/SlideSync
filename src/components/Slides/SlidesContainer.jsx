@@ -20,7 +20,6 @@ export default class SlidesContainer extends React.Component {
       slidePos: 0,
       numPages: null,
       pdfUrl: null,
-      width: window.innerWidth,
     };
   }
 
@@ -50,13 +49,6 @@ export default class SlidesContainer extends React.Component {
     });
   }
 
-  timerResize() {
-    clearTimeout(this.resizeTimer);
-    this.resizeTimer = setTimeout(() => {
-      this.resize();
-    }, 100);
-  }
-
   resize = () => {
     const scale = ((window.innerWidth - 150) / 2) / 792;
     if (this.pdf) {
@@ -64,10 +56,17 @@ export default class SlidesContainer extends React.Component {
         file: this.pdf.props.file,
         onDocumentComplete: this.pdf.props.onDocumentComplete,
         page: this.pdf.props.page,
-        scale: scale,
+        scale,
       });
     }
     this.setState({ pdfScale: scale });
+  }
+
+  timerResize() {
+    clearTimeout(this.resizeTimer);
+    this.resizeTimer = setTimeout(() => {
+      this.resize();
+    }, 100);
   }
 
   handleNext() {
@@ -86,7 +85,6 @@ export default class SlidesContainer extends React.Component {
 
   renderPdfDocument() {
     const {
-      width,
       pdfUrl,
       numPages,
       slidePos,
