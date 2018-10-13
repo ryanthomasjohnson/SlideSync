@@ -9,7 +9,7 @@ const config = {
   databaseURL: 'https://mhacks-219303.firebaseio.com',
   projectId: 'mhacks-219303',
   storageBucket: 'mhacks-219303.appspot.com',
-  messagingSenderId: '92866787390'
+  messagingSenderId: '92866787390',
 };
 firebase.initializeApp(config);
 
