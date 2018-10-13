@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PDF from 'react-pdf-js';
 import firebase from '../../firebase';
+import { Button } from 'semantic-ui-react';
 
 export default class SlidesContainer extends React.Component {
 
@@ -11,7 +12,7 @@ export default class SlidesContainer extends React.Component {
     this.docRef = db.collection('slides').doc(this.props.title);
     const storage = firebase.storage();
     this.storageRef = storage.ref('slides/' + this.props.title);
-    this.state = {slidePos: 0, pdfUrl: null};
+    this.state = {slidePos: 0, numPages: null, pdfUrl: null};
   }
 
   componentWillMount() {
@@ -30,7 +31,7 @@ export default class SlidesContainer extends React.Component {
   }
 
   setSlidePos(number) {
-    this.docRef.set({slide_number: parseInt(number)}, {merge: true})
+    this.docRef.set({slide_number: number}, {merge: true})
       .then(() => {
         console.log('Set slidePos to ' + number);
       })
@@ -40,24 +41,43 @@ export default class SlidesContainer extends React.Component {
   }
 
   onDocumentLoad(pages) {
-    console.log(pages);
+    this.setState({numPages: pages});
   }
 
   renderPdfDocument() {
     console.log(this.state.pdfUrl);
+    console.log(this.state);
     if (this.state.pdfUrl === null) {
       return (<div>Retrieving pdf location...</div>);
     }
+    let pageNum = this.state.slidePos;
+    if(this.state.numPages === null) {
+      pageNum = 0;
+    }
+    console.log('Requesting page: ' + pageNum);
     return (
-      <PDF file={this.state.pdfUrl} onDocumentComplete={this.onDocumentLoad} page={this.state.slidePos + 1} />
+      <PDF 
+       file={this.state.pdfUrl} 
+       onDocumentComplete={(p) => this.onDocumentLoad(p)} 
+       page={pageNum + 1} />
     );
+  }
+
+  handleNext() {
+    this.setSlidePos(Math.min(this.state.slidePos + 1, this.state.numPages - 1));
+  }
+
+  handlePrev() {
+    this.setSlidePos(Math.max(this.state.slidePos - 1, 0));
   }
 
   render() {
     return (
       <div className='SlidesContainer'>
         {this.renderPdfDocument()}
-        Slides Container POSITION: <input type="number" value={this.state.slidePos} onChange={(e) => {this.setSlidePos(e.target.value)}} />
+        Slide {this.state.slidePos + 1}
+        <Button onClick={() => {this.handlePrev()}}>Prev</Button>
+        <Button onClick={() => {this.handleNext()}}>Next</Button>
       </div>);
   }
 }

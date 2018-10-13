@@ -11,7 +11,7 @@ export default function LectureContainer({ match }) {
       <Grid columns={2}>
         <Grid.Row>
           <Grid.Column>
-            <SlidesContainer title={match.params.title} />
+            <SlidesContainer title="Lecture 9 - Wang Tiling.pdf" />
           </Grid.Column>
           <Grid.Column>
             <NotesContainer />
