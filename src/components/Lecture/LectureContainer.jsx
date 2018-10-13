@@ -8,7 +8,7 @@ import SlidesContainer from '../Slides/SlidesContainer';
 export default function LectureContainer({ match }) {
   return (
     <div className="LectureContainer">
-      <Grid columns={2}>
+      <Grid columns={2} padded>
         <Grid.Row>
           <Grid.Column>
             <SlidesContainer title="Lecture 9 - Wang Tiling.pdf" />
