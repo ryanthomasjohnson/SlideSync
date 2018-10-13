@@ -1,17 +1,18 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { Editor, EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import {
+  Editor, EditorState, convertToRaw, convertFromRaw,
+} from 'draft-js';
 // import { merge } from 'rxjs';
 import firebase from '../../firebase';
 
 export default class NotesContainer extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       notes: 'Loading notes...',
       editorState: EditorState.createEmpty(),
-      cursorPosition: 0
+      cursorPosition: 0,
     };
     this.selectionState = null;
     this.textRef = React.createRef();
@@ -20,14 +21,14 @@ export default class NotesContainer extends React.Component {
   }
 
   componentDidMount() {
-    const slidesRef = firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf'); //.orderByKey().limitToLast(100);
+    const slidesRef = firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf');
     slidesRef.onSnapshot((slide) => {
       this.setState({ notes: slide.data().notes });
       const rawState = slide.data().notes;
       const contentState = convertFromRaw(rawState);
       let editorState = EditorState.createWithContent(contentState);
       if (this.selectionState !== null) {
-        editorState = EditorState.forceSelection(editorState, this.selectionState)
+        editorState = EditorState.forceSelection(editorState, this.selectionState);
       }
       this.setState({ editorState });
     });
@@ -40,7 +41,6 @@ export default class NotesContainer extends React.Component {
   }
 
   onChange(editorState) {
-
     const rawState = convertToRaw(editorState.getCurrentContent());
     const selectionState = editorState.getSelection();
     this.selectionState = selectionState;
