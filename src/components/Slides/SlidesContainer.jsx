@@ -25,7 +25,8 @@ export default class SlidesContainer extends React.Component {
   }
 
   componentWillMount() {
-    window.addEventListener('resize', () => this.resize());
+    this.resize();
+    window.addEventListener('resize', () => this.timerResize());
     this.storageRef.getDownloadURL()
       .then((url) => {
         this.setState({ pdfUrl: url });
@@ -49,8 +50,24 @@ export default class SlidesContainer extends React.Component {
     });
   }
 
+  timerResize() {
+    clearTimeout(this.resizeTimer);
+    this.resizeTimer = setTimeout(() => {
+      this.resize();
+    }, 100);
+  }
+
   resize = () => {
-    this.setState({ width: window.innerWidth });
+    const scale = ((window.innerWidth - 150) / 2) / 792;
+    if (this.pdf) {
+      this.pdf.renderOtherPage({
+        file: this.pdf.props.file,
+        onDocumentComplete: this.pdf.props.onDocumentComplete,
+        page: this.pdf.props.page,
+        scale: scale,
+      });
+    }
+    this.setState({ pdfScale: scale });
   }
 
   handleNext() {
@@ -63,15 +80,18 @@ export default class SlidesContainer extends React.Component {
     this.setSlidePos(Math.max(slidePos - 1, 0));
   }
 
+  savePdfRef(pdf) {
+    this.pdf = pdf;
+  }
+
   renderPdfDocument() {
     const {
       width,
       pdfUrl,
       numPages,
       slidePos,
+      pdfScale,
     } = this.state;
-
-    const scale = (width / 2) / 792;
 
     // Don't try and render pdf until we get the url
     if (pdfUrl === null) {
@@ -84,10 +104,11 @@ export default class SlidesContainer extends React.Component {
     }
     return (
       <PDF
+        ref={(ref) => { this.savePdfRef(ref); }}
         file={pdfUrl}
         onDocumentComplete={p => this.onDocumentLoad(p)}
         page={pageNum + 1}
-        scale={scale}
+        scale={pdfScale}
       />
     );
   }
