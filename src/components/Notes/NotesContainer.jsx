@@ -10,13 +10,9 @@ export default class NotesContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: 'Loading notes...',
       editorState: EditorState.createEmpty(),
-      cursorPosition: 0,
     };
     this.selectionState = null;
-    this.textRef = React.createRef();
-    this.setText = this.setText.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
@@ -34,33 +30,21 @@ export default class NotesContainer extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-    const { cursorPosition } = this.state;
-    this.textRef.current.selectionEnd = cursorPosition;
-    this.textRef.current.selectionStart = cursorPosition;
-  }
-
   onChange(editorState) {
     const rawState = convertToRaw(editorState.getCurrentContent());
     const selectionState = editorState.getSelection();
     this.selectionState = selectionState;
+    console.log(this.selectionState);
 
     firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf').set({ notes: rawState }, { merge: true });
     this.setState({ editorState });
   }
 
-  setText(event) {
-    this.setState({ cursorPosition: event.target.selectionEnd });
-    firebase.firestore().collection('slides').doc('Lecture 9 - Wang Tiling.pdf').set({ notes: event.target.value }, { merge: true });
-  }
-
-
   render() {
-    const { notes, editorState } = this.state;
+    const { editorState } = this.state;
     return (
       <div className="NotesContainer">
         Notes Container
-        <textarea ref={this.textRef} rows="4" cols="50" onInput={this.setText} value={notes} />
         <Editor editorState={editorState} onChange={this.onChange} />
       </div>);
   }
