@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types';
 import PDF from 'reactjs-pdf';
 import { Button, Header } from 'semantic-ui-react';
@@ -48,6 +49,7 @@ export default class SlidesContainer extends React.Component {
   }
 
   renderPdfDocument() {
+    console.log("WIDTH:", this.props.width);
     console.log(this.state.pdfUrl);
     console.log(this.state);
     // Don't try and render pdf until we get the url
@@ -61,9 +63,9 @@ export default class SlidesContainer extends React.Component {
     }
     console.log('Requesting page: ' + pageNum);
     return (
-      <PDF 
-       file={this.state.pdfUrl} 
-       onDocumentComplete={(p) => this.onDocumentLoad(p)} 
+      <PDF
+       file={this.state.pdfUrl}
+       onDocumentComplete={(p) => this.onDocumentLoad(p)}
        page={pageNum + 1}
        scale={0.75} />
     );
@@ -80,9 +82,9 @@ export default class SlidesContainer extends React.Component {
   render() {
     return (
       <div className='SlidesContainer'>
-        <SlidesHeader 
-         title={this.props.title} 
-         slidePos={this.state.slidePos} 
+        <SlidesHeader
+         title={this.props.title}
+         slidePos={this.state.slidePos}
          numPages={this.state.numPages}
          handlePrev={() => {this.handlePrev()}}
          handleNext={() => {this.handleNext()}}/>
