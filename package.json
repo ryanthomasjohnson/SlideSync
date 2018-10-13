@@ -23,6 +23,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "eslint": "^5.7.0",
     "firebase": "^5.5.4"
   }
 }
