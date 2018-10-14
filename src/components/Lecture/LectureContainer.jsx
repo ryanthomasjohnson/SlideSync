@@ -4,6 +4,7 @@ import { Grid } from 'semantic-ui-react';
 
 import NotesContainer from '../Notes/NotesContainer';
 import SlidesContainer from '../Slides/SlidesContainer';
+import Editor from '../Editor/Editor';
 
 export default class LectureContainer extends React.Component {
   slideColRef = React.createRef();
@@ -26,7 +27,7 @@ export default class LectureContainer extends React.Component {
               </div>
             </Grid.Column>
             <Grid.Column>
-              <NotesContainer />
+              <Editor />
             </Grid.Column>
           </Grid.Row>
         </Grid>
