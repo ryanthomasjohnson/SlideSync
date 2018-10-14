@@ -8,7 +8,9 @@ export default function IndexTable({ lectures }) {
     <Table.Row>
       <Table.Cell verticalAlign="middle">
         {lecture.get('name')}
-        <Button content="Join" floated="right" primary />
+        <a href={`/slides/${lecture.id}`}>
+          <Button content="Join" floated="right" primary />
+        </a>
       </Table.Cell>
     </Table.Row>
   ));

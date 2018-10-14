@@ -11,15 +11,17 @@ export default class SlidesContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    const { title } = this.props;
+    const { id } = this.props;
+    console.log(id);
     const db = firebase.firestore();
-    this.docRef = db.collection('slides').doc(title);
+    this.docRef = db.collection('slides').doc(id);
     const storage = firebase.storage();
-    this.storageRef = storage.ref(`slides/${title}`);
+    this.storageRef = storage.ref(`slides/${id}`);
     this.state = {
       slidePos: 0,
       numPages: null,
       pdfUrl: null,
+      title: '',
     };
   }
 
@@ -35,7 +37,7 @@ export default class SlidesContainer extends React.Component {
         this.setState({ pdfUrl: null });
       });
     this.docRef.onSnapshot((document) => {
-      this.setState({ slidePos: document.data().slide_number });
+      this.setState({ slidePos: document.get('slide_number'), title: document.get('name') });
     });
   }
 
@@ -112,8 +114,7 @@ export default class SlidesContainer extends React.Component {
   }
 
   render() {
-    const { title } = this.props;
-    const { slidePos, numPages } = this.state;
+    const { slidePos, numPages, title } = this.state;
 
     return (
       <div className="SlidesContainer">
@@ -133,5 +134,5 @@ export default class SlidesContainer extends React.Component {
   }
 }
 SlidesContainer.propTypes = {
-  title: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };

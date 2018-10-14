@@ -35,8 +35,8 @@ class Editor extends Component {
   getRef() {
     var ref = window.firebase.database().ref();
     var hash = window.location.hash.replace(/#/g, '');
-    if (this.props.title) {
-      ref = ref.child(this.props.title);
+    if (this.props.id) {
+      ref = ref.child(this.props.id);
     } else if (hash) {
       ref = ref.child(hash);
     } else {

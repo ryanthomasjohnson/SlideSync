@@ -23,11 +23,11 @@ export default class LectureContainer extends React.Component {
           <Grid.Row>
             <Grid.Column>
               <div ref={this.getWidth}>
-                <SlidesContainer title="Lecture 9 - Wang Tiling.pdf" />
+                <SlidesContainer id={match.params.id} />
               </div>
             </Grid.Column>
             <Grid.Column>
-              <Editor title="wkZJLjw4" />
+              <Editor id={match.params.id} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
