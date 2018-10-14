@@ -96,7 +96,7 @@ export default class AccountContainer extends React.Component {
             <Card.Header>{loginUtility.getDisplayName()}</Card.Header>
             <Card.Meta>
               <span>
-                {'Joined:' + new Date(loginUtility.getCreationTime()).toLocaleDateString()}
+                {'Joined: ' + new Date(loginUtility.getCreationTime()).toLocaleString()}
               </span>
               <br />
               <span>
