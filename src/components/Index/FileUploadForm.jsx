@@ -16,15 +16,16 @@ export default class FileUploadForm extends React.Component {
   handleSubmit = () => {
     const { title } = this.state;
     const { onSubmit } = this.props;
-    if (!this.fileUpload) {
+    if (!this.fileUpload || this.fileUpload.inputRef.files.length === 0) {
       return;
     }
-    console.log(this.fileUpload.inputRef);
-    console.log(this.fileUpload.inputRef.files);
     const file = this.fileUpload.inputRef.files[0];
     const reader = new FileReader();
     reader.onload = (e) => {
       onSubmit(title, e.target.result);
+    };
+    reader.onerror = (err) => {
+      console.log(err);
     };
     reader.readAsArrayBuffer(file);
   }
