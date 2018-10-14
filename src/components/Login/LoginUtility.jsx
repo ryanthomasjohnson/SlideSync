@@ -3,6 +3,7 @@ import { firebase } from '../../firebase';
 class LoginUtility {
   constructor() {
     this.auth = firebase.auth();
+    this.db = firebase.firestore();
   }
 
   isLoggedIn() {
@@ -32,7 +33,27 @@ class LoginUtility {
   getUid() {
     return this.auth.currentUser.uid;
   }
+
+  getCreationTime() {
+    return this.auth.currentUser.metadata.creationTime;
+  }
+
+  getLastSignInTime() {
+    return this.auth.currentUser.metadata.lastSignInTime;
+  }
+
+  getUserInfo() {
+    return this.db.collection('users').doc(this.getUid()).get();
+  }
+
+  setUserInfo(info) {
+    return this.db.collection('users').doc(this.getUid()).set(info, {merge: true});
+  }
+
+  onChange(nextOrObserver, error, completed) {
+    return this.auth.onAuthStateChanged(nextOrObserver, error, completed);
+  }
 }
 
 const loginUtility = new LoginUtility();
-export default { loginUtility };
+export { loginUtility };

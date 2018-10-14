@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/storage';
 import 'firebase/database';
-import 'firebase/auth'
+import 'firebase/auth';
 
 // Initialize Firebase
 const config = {
