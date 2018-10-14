@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Message, Button, Image, Card, Icon } from 'semantic-ui-react';
+import { Message, Button, Image, Card, Confirm } from 'semantic-ui-react';
 
 import firebase from '../../firebase';
 
@@ -12,11 +12,28 @@ import AccountMenu from './AccountMenu';
 export default class AccountContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       isLoggedIn: loginUtility.isLoggedIn(),
       isProfessor: false,
+      open: false,
     };
   }
+
+  open = () => this.setState({ open: true });
+  close = () => {
+    this.setState({ open: false });
+  };
+
+  deleteUser = () => {
+    this.setState({ open: false });
+    loginUtility.getCurrentUser().delete()
+      .then(() => {
+        console.log('Deleted');
+      })
+      .catch((err) => {
+        alert('You must log out and log back in before deleting your account.');
+      });
+  };
 
   componentWillMount() {
     this.removeOnChangeObserver = loginUtility.onChange(() => {
@@ -67,7 +84,7 @@ export default class AccountContainer extends React.Component {
   }
 
   renderLoggedIn() {
-    const { isProfessor } = this.state;
+    const { isProfessor, open } = this.state;
     return (
       <div className="AccountContainer">
       <AccountMenu
@@ -79,15 +96,23 @@ export default class AccountContainer extends React.Component {
             <Card.Header>{loginUtility.getDisplayName()}</Card.Header>
             <Card.Meta>
               <span>
-                {'Joined on ' + loginUtility.getCreationTime()}
+                {'Joined:' + new Date(loginUtility.getCreationTime()).toLocaleDateString()}
               </span>
+              <br />
+              <span>
+                Email: {loginUtility.getEmail()}
+              </span>
+              <br />
             </Card.Meta>
-            <Button toggle active={isProfessor} onClick={() => { this.toggleProfessor() }}>
+            <Button fluid toggle active={isProfessor} onClick={() => { this.toggleProfessor() }}>
               {isProfessor ? 'Professor' : 'Student'}
             </Button>
           </Card.Content>
           <Card.Content extra>
-            {loginUtility.getEmail()}
+            <Button negative fluid onClick={this.open}>
+              Delete Account
+            </Button>
+            <Confirm open={open} onCancel={this.close} onConfirm={this.deleteUser} />
           </Card.Content>
         </Card>
       </div>
