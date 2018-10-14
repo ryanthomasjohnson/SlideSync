@@ -5,11 +5,17 @@ import './Editor.css';
 import firebase from '../../firebase';
 
 class Editor extends Component {
+
+  constructor(props) {
+    super(props);
+    this.getRef = this.getRef.bind(this);
+  }
+
   componentDidMount() {
     // Initialize Firebase.
     // TODO: replace with your Firebase project configuration.
     window.firebase = firebase;
-    const firepadRef = this.getExampleRef();
+    const firepadRef = this.getRef();
     const codeMirror = window.CodeMirror(document.getElementById('firepad-container'), {
       lineWrapping: true,
     });
@@ -25,10 +31,12 @@ class Editor extends Component {
   }
 
   // Helper to get hash from end of URL or generate a random one.
-  getExampleRef() {
+  getRef() {
     var ref = window.firebase.database().ref();
     var hash = window.location.hash.replace(/#/g, '');
-    if (hash) {
+    if (this.props.title) {
+      ref = ref.child(this.props.title);
+    } else if (hash) {
       ref = ref.child(hash);
     } else {
       ref = ref.push(); // generate unique location.

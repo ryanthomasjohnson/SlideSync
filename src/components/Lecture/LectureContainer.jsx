@@ -27,7 +27,7 @@ export default class LectureContainer extends React.Component {
               </div>
             </Grid.Column>
             <Grid.Column>
-              <Editor />
+              <Editor title="wkZJLjw4" />
             </Grid.Column>
           </Grid.Row>
         </Grid>
