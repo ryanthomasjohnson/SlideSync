@@ -10,8 +10,11 @@ export default class LectureMenu extends React.Component {
   constructor(props) {
     super(props);
 
+    console.log(props.handleQuiz)
+
     this.state = {
       isLoggedIn: loginUtility.isLoggedIn(),
+      handleQuiz: props.handleQuiz,
       account: {
         photoURL: null,
         displayName: null,
@@ -54,7 +57,7 @@ export default class LectureMenu extends React.Component {
   }
 
   render() {
-    const { isLoggedIn, account } = this.state;
+    const { isLoggedIn, account, handleQuiz } = this.state;
     console.log(this.state);
 
     let accountMenu = null;
@@ -85,7 +88,7 @@ export default class LectureMenu extends React.Component {
     }
 
     const upload = (
-      <Menu.Item name="New Quiz">
+      <Menu.Item name="New Quiz" onClick={() => handleQuiz()}>
         New Quiz&nbsp;&nbsp;
         <Icon name="plus circle" />
       </Menu.Item>
