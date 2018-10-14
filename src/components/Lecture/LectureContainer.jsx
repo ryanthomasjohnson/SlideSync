@@ -5,6 +5,7 @@ import { Grid, Sidebar, Button } from 'semantic-ui-react';
 import SlidesContainer from '../Slides/SlidesContainer';
 import Editor from '../Editor/Editor';
 import Chat from '../Chat/Chat';
+import LectureMenu from './LectureMenu';
 
 export default class LectureContainer extends React.Component {
   slideColRef = React.createRef();
@@ -26,6 +27,7 @@ export default class LectureContainer extends React.Component {
 
     return (
       <div className="LectureContainer" style={{ backgroundColor: 'MintCream' }}>
+        <LectureMenu />
         <Sidebar.Pushable>
           <Sidebar
             animation="overlay"

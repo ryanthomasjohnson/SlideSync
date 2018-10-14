@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Image, Menu, Message } from 'semantic-ui-react';
+import { Icon, Image, Menu } from 'semantic-ui-react';
 
-import FileUploadModal from './FileUploadModal';
+import FileUploadModal from '../Index/FileUploadModal';
 import LoginModal from '../Login/LoginModal';
 import { loginUtility } from '../Login/LoginUtility';
 
 // TODO state can be shifted to container
-export default class IndexMenu extends React.Component {
+export default class AccountMenu extends React.Component {
   constructor(props) {
     super(props);
 
@@ -85,13 +85,6 @@ export default class IndexMenu extends React.Component {
       accountMenu = <LoginModal trigger={signin} onLogin={this.handleLogin} />;
     }
 
-    const upload = (
-      <Menu.Item name="New Lecture">
-        New Lecture&nbsp;&nbsp;
-        <Icon name="plus circle" />
-      </Menu.Item>
-    );
-
     const home = (
       <Menu.Item name="Home">
         <a href='/'>
@@ -104,7 +97,6 @@ export default class IndexMenu extends React.Component {
       <div className="IndexMenu">
         <Menu inverted style={{ borderRadius: '0px' }}>
           {home}
-          {isLoggedIn ? <FileUploadModal trigger={upload} /> : ""}
           {accountMenu}
         </Menu>
       </div>);
