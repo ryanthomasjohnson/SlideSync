@@ -6,7 +6,7 @@ import Editor from '../Editor/Editor';
 import Chat from '../Chat/Chat';
 import LectureQuiz from './LectureQuiz';
 import firebase from '../../firebase';
-
+import LectureMenu from './LectureMenu';
 
 export default class LectureContainer extends React.Component {
 
@@ -96,6 +96,7 @@ export default class LectureContainer extends React.Component {
           </Modal.Actions>
         </Modal>
 
+        <LectureMenu />
         <Sidebar.Pushable>
           <Sidebar
             animation="overlay"

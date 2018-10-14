@@ -6,6 +6,7 @@ import firebase from '../../firebase';
 
 import LoginModal from '../Login/LoginModal';
 import { loginUtility } from '../Login/LoginUtility';
+import AccountMenu from './AccountMenu';
 
 
 export default class AccountContainer extends React.Component {
@@ -19,6 +20,9 @@ export default class AccountContainer extends React.Component {
 
   componentWillMount() {
     this.removeOnChangeObserver = loginUtility.onChange(() => {
+      if (!loginUtility.isLoggedIn()) {
+        this.setState({isLoggedIn: false});
+      }
       loginUtility.getUserInfo()
         .then((info) => {
           this.setState({ isProfessor: info.get('is_professor') });
@@ -26,7 +30,8 @@ export default class AccountContainer extends React.Component {
         .catch((err) => {
           console.log(err);
         });
-      this.setState({isLoggedIn: loginUtility.isLoggedIn()});
+      console.log(loginUtility.isLoggedIn());
+      this.setState({isLoggedIn: true});
     });
   }
 
@@ -35,11 +40,15 @@ export default class AccountContainer extends React.Component {
   }
 
   renderNotLoggedIn() {
+
     const loginNow = (
       <Button>Login Now</Button>
     );
     return (
         <div className="AccountContainer">
+        <AccountMenu
+          handleLogin={this.handleLogin}
+        />
           <Message negative size="big" floating>
             <Message.Header>You aren't logged in!</Message.Header>
             <LoginModal trigger={loginNow} />
@@ -61,6 +70,9 @@ export default class AccountContainer extends React.Component {
     const { isProfessor } = this.state;
     return (
       <div className="AccountContainer">
+      <AccountMenu
+          handleLogin={this.handleLogin}
+        />
         <Card centered>
           <Image src={loginUtility.getPhotoUrl()} />
           <Card.Content>
