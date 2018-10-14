@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Grid } from 'semantic-ui-react';
 
-import NotesContainer from '../Notes/NotesContainer';
 import SlidesContainer from '../Slides/SlidesContainer';
 import Editor from '../Editor/Editor';
+import Chat from '../Chat/Chat';
 
 export default class LectureContainer extends React.Component {
   slideColRef = React.createRef();
@@ -25,6 +25,7 @@ export default class LectureContainer extends React.Component {
               <div ref={this.getWidth}>
                 <SlidesContainer id={match.params.id} />
               </div>
+              <Chat id={match.params.id} />
             </Grid.Column>
             <Grid.Column>
               <Editor id={match.params.id} />
