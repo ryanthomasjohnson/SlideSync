@@ -42,12 +42,12 @@ class LoginUtility {
     return this.auth.currentUser.metadata.lastSignInTime;
   }
 
-  getUserInfo() {
-    return this.db.collection('users').doc(this.getUid()).get();
+  getUserInfo(uid = this.getUid()) {
+    return this.db.collection('users').doc(uid).get();
   }
 
   setUserInfo(info) {
-    return this.db.collection('users').doc(this.getUid()).set(info, {merge: true});
+    return this.db.collection('users').doc(this.getUid()).set(info, { merge: true });
   }
 
   onChange(nextOrObserver, error, completed) {

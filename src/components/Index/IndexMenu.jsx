@@ -24,9 +24,13 @@ export default class IndexMenu extends React.Component {
     this.removeOnChangeObserver = loginUtility.onChange((user) => {
       let url = null;
       let displayName = null;
-      console.log(user);
       if (loginUtility.isLoggedIn()) {
-        console.log('LOGGED IN');
+        loginUtility.setUserInfo({
+          uid: loginUtility.getUid(),
+          displayName: loginUtility.getDisplayName(),
+          email: loginUtility.getEmail(),
+          photoURL: loginUtility.getPhotoUrl(),
+        });
         url = loginUtility.getPhotoUrl();
         displayName = loginUtility.getDisplayName();
       }
