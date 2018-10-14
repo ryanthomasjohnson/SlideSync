@@ -30,7 +30,7 @@ const FIREBASE_UI_CONFIG = {
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
   ],
   callbacks: {
-    signInSuccessWithAuthResult: () => false
+    signInSuccessWithAuthResult: () => false,
   },
 };
 

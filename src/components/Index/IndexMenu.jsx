@@ -12,7 +12,7 @@ export default class IndexMenu extends React.Component {
     super(props);
 
     this.state = {
-      isLoggedIn: false,
+      isLoggedIn: loginUtility.isLoggedIn(),
       account: {
         photoURL: null,
         displayName: null,
@@ -20,18 +20,28 @@ export default class IndexMenu extends React.Component {
     };
   }
 
-  componentDidMount() {
-    if (loginUtility.isLoggedIn()) {
+  componentWillMount() {
+    this.removeOnChangeObserver = loginUtility.onChange((user) => {
+      let url = null;
+      let displayName = null;
+      console.log(user);
+      if (loginUtility.isLoggedIn()) {
+        console.log('LOGGED IN');
+        url = loginUtility.getPhotoUrl();
+        displayName = loginUtility.getDisplayName();
+      }
       this.setState({
-        isLoggedIn: true,
+        isLoggedIn: loginUtility.isLoggedIn(),
         account: {
-          photoURL: loginUtility.getPhotoUrl(),
-          displayName: loginUtility.getDisplayName(),
+          photoURL: url,
+          displayName: displayName,
         },
       });
-    } else {
-      this.setState({ isLoggedIn: false });
-    }
+    });
+  }
+
+  componentWillUnmount() {
+    this.removeOnChangeObserver();
   }
 
   handleLogout = () => {
@@ -46,6 +56,7 @@ export default class IndexMenu extends React.Component {
 
   render() {
     const { isLoggedIn, account } = this.state;
+    console.log(this.state);
 
     let accountMenu = null;
     if (isLoggedIn) {
@@ -54,9 +65,11 @@ export default class IndexMenu extends React.Component {
           <Menu.Item name="signin">
             <Image src={account.photoURL} size="mini" circular />
             &nbsp;&nbsp;
-            {account.displayName}
+            <a href="/account">
+              {account.displayName}
+            </a>
           </Menu.Item>
-          <Menu.Item name="signin" onClick={this.handleLogout()}>
+          <Menu.Item name="signin" onClick={this.handleLogout}>
             <Icon name="sign out" />
             Logout
           </Menu.Item>
