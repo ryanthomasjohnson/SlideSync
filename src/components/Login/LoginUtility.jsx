@@ -35,5 +35,4 @@ class LoginUtility {
 }
 
 const loginUtility = new LoginUtility();
-
-export { loginUtility };
+export default { loginUtility };
