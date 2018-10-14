@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { Grid } from 'semantic-ui-react';
+import { Grid, Message } from 'semantic-ui-react';
 
 import firebase from '../../firebase';
 import IndexMenu from './IndexMenu';
 import IndexTable from './IndexTable';
+
+import { loginUtility } from '../Login/LoginUtility';
 
 export default class IndexContainer extends React.Component {
   constructor(props) {
@@ -15,25 +17,41 @@ export default class IndexContainer extends React.Component {
 
     this.state = {
       lectures: [],
+      isLoggedIn: false,
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.collectionRef.onSnapshot((snap) => {
       this.setState({
         lectures: snap.docs,
       });
     });
+    this.removeObserver = loginUtility.onChange(() => {
+      this.setState({ isLoggedIn: loginUtility.isLoggedIn() });
+    });
+  }
+
+  componentWillUnmount() {
+    this.removeObserver();
   }
 
   render() {
-    const { lectures } = this.state;
+    const { lectures, isLoggedIn } = this.state;
+
+    let error = (
+        <Message negative>
+          <Message.Header>You are not logged in.</Message.Header>
+          <p>Login is required for SlideSync to work properly.</p>
+        </Message>
+    );
 
     return (
       <div className="IndexContainer">
         <IndexMenu
           handleLogin={this.handleLogin}
         />
+        {!isLoggedIn ? error : ""}
         <Grid columns="equal">
           <Grid.Row>
             <Grid.Column></Grid.Column>
