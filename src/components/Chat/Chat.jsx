@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import NameBox from './NameBox.js';
+// import NameBox from './NameBox.js';
+import { Comment, Button, Form, Segment, Divider, Input, Grid } from 'semantic-ui-react';
 import Chat from 'twilio-chat';
+const moment = require('moment');
 
 class ChatApp extends Component {
   constructor(props) {
@@ -16,7 +18,7 @@ class ChatApp extends Component {
       messages: [],
       newMessage: ''
     };
-    this.channelName = 'general';
+    this.channelName = this.props.id;
   }
 
   componentWillMount = () => {
@@ -54,38 +56,22 @@ class ChatApp extends Component {
 
   getToken = () => {
     const identityValue = encodeURIComponent(this.state.name);
-    const url = 'https://us-central1-mhacks-219303.cloudfunctions.net/getToken?identity=' +identityValue
-    // const url = 'https://us-central1-mhacks-219303.cloudfunctions.net/helloWorld'
-    // const url = 'http://localhost:3000/token/' + identityValue
-    console.log(url);
+    const url = 'https://us-central1-mhacks-219303.cloudfunctions.net/getToken?identity=' + identityValue
     fetch(url, {
       method: 'POST',
       mode: 'cors',
       headers: {
-        'Access-Control-Allow-Origin':'*'
+        'Access-Control-Allow-Origin': '*',
       }
 
     })
-    .then(data => data.json())
-    .then(data => {
-        console.log(data.token);
-        // const validToken = data.token
-        this.setState({ token:data.token }, this.initChat);
+      .then(data => data.json())
+      .then(data => {
+        this.setState({ token: data.token }, this.initChat);
       });
   };
 
-//   getToken = () => {
-//   fetch(`/token/${this.state.name}`, {
-//     method: 'POST'
-//   })
-//     .then(response => response.json())
-//     .then(data => {
-//       this.setState({ token: data.token }, this.initChat);
-//     });
-// };
-
   initChat = () => {
-    console.log("Initing chat")
     this.chatClient = new Chat(this.state.token);
     this.chatClient.initialize().then(this.clientInitiated.bind(this));
   };
@@ -100,7 +86,7 @@ class ChatApp extends Component {
           }
         })
         .catch(err => {
-          if(err.body.code === 50300){
+          if (err.body.code === 50300) {
             return this.chatClient.createChannel({
               uniqueName: this.channelName
             });
@@ -109,7 +95,11 @@ class ChatApp extends Component {
         .then(channel => {
           this.channel = channel;
           window.channel = channel;
-          return this.channel.join();
+          if (this.channel.state.status !== "joined") {
+            return this.channel.join();
+          }
+          return;
+
         })
         .then(() => {
           this.channel.getMessages().then(this.messagesLoaded);
@@ -119,12 +109,12 @@ class ChatApp extends Component {
   };
 
   messagesLoaded = messagePage => {
-    this.setState({ messages: messagePage.items });
+    this.setState({ messages: messagePage.items.reverse() });
   };
 
   messageAdded = message => {
     this.setState((prevState, props) => ({
-      messages: [...prevState.messages, message]
+      messages: [message, ...prevState.messages]
     }));
   };
 
@@ -147,46 +137,65 @@ class ChatApp extends Component {
 
   render() {
     var loginOrChat;
-    const messages = this.state.messages.map(message => {
+    const messages = this.state.messages.map((message, index) => {
+      console.log(message);
       return (
-        <li key={message.sid} ref={this.newMessageAdded}>
-          <b>{message.author}:</b> {message.body}
-        </li>
+        <Segment raised compact size="tiny" key={index}>
+          <Comment>
+            <Comment.Content>
+              <Comment.Author as="a">{message.author}</Comment.Author>
+              <Comment.Metadata>
+                <div>{moment(message.timestamp).fromNow()}</div>
+              </Comment.Metadata>
+              <Comment.Text>{message.body}</Comment.Text>
+            </Comment.Content>
+          </Comment>
+        </Segment>
       );
     });
     if (this.state.loggedIn) {
       loginOrChat = (
         <div>
-          <h3>Messages</h3>
-          <p>Logged in as {this.state.name}</p>
-          <ul className="messages">
+          <Divider />
+          <Grid>
+            <Grid.Row columns="2" padded>
+              <Grid.Column width="4">
+                <h2>Chat</h2>
+              </Grid.Column>
+              <Grid.Column width="12" floated="right">
+                <form onSubmit={this.sendMessage}>
+                  <Input fluid icon="chevron right" type="text" name="message" id="message" onChange={this.onMessageChanged} value={this.state.newMessage} />
+                </form>
+
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+
+          <Comment.Group minimal size="tiny">
             {messages}
-          </ul>
-          <form onSubmit={this.sendMessage}>
-            <label htmlFor="message">Message: </label>
-            <input
-              type="text"
-              name="message"
-              id="message"
-              onChange={this.onMessageChanged}
-              value={this.state.newMessage}
-            />
-            <button>Send</button>
-          </form>
-          <br /><br />
+          </Comment.Group>
+
           <form onSubmit={this.logOut}>
             <button>Log out</button>
           </form>
+          <p>Logged in as {this.state.name}</p>
         </div>
       );
     } else {
       loginOrChat = (
         <div>
-          <NameBox
+          <Form>
+            <Form.Field onChange={this.onNameChanged}>
+              <label>Name</label>
+              <input placeholder='Enter Name' />
+            </Form.Field>
+            <Button type="submit" onClick={this.logIn} >Submit</Button>
+          </Form>
+          {/* <NameBox
             name={this.state.name}
             onNameChanged={this.onNameChanged}
             logIn={this.logIn}
-          />
+          /> */}
         </div>
       );
     }
