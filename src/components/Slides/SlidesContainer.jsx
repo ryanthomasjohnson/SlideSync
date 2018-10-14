@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PDF from 'reactjs-pdf';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Header } from 'semantic-ui-react';
 
 import firebase from '../../firebase';
 import SlidesHeader from './SlidesHeader';
@@ -118,7 +118,12 @@ export default class SlidesContainer extends React.Component {
 
     return (
       <div className="SlidesContainer">
-        <Segment.Group>
+        <Segment.Group raised>
+          <Segment>
+            <Header size="huge">
+              Slides
+            </Header>
+          </Segment>
           <SlidesHeader
             title={title}
             slidePos={slidePos}

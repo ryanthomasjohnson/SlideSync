@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/storage';
 import 'firebase/database';
+import 'firebase/auth'
 
 // Initialize Firebase
 const config = {
@@ -17,5 +18,22 @@ firebase.initializeApp(config);
 const firestore = firebase.firestore();
 const settings = { timestampsInSnapshots: true };
 firestore.settings(settings);
+
+const auth = firebase.auth();
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+const FIREBASE_UI_CONFIG = {
+  // Popup signin flow rather than redirect flow.
+  signInFlow: 'popup',
+  // We will display Google and Facebook as auth providers.
+  signInOptions: [
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+  ],
+  callbacks: {
+    signInSuccessWithAuthResult: () => false
+  },
+};
+
+export {firebase, FIREBASE_UI_CONFIG};
 
 export default firebase;

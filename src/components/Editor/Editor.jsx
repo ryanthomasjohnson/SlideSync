@@ -2,7 +2,7 @@ import React, {
   Component
 } from 'react';
 import './Editor.css';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Header } from 'semantic-ui-react';
 import firebase from '../../firebase';
 
 class Editor extends Component {
@@ -52,9 +52,16 @@ class Editor extends Component {
   render() {
     return (
       <div>
-        <Segment>
-          <div id="firepad-container"> </div>
-        </Segment>
+        <Segment.Group raised>
+          <Segment>
+            <Header size="huge">
+              Notes
+            </Header>
+          </Segment>
+          <Segment>
+            <div id="firepad-container"> </div>
+          </Segment>
+        </Segment.Group>
       </div>
     );
   }
