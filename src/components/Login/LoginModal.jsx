@@ -17,7 +17,9 @@ export default class LoginModal extends React.Component {
   componentDidMount() {
     this.unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
       const { onLogin } = this.props;
-      onLogin(user);
+      if(onLogin) {
+        onLogin(user);
+      }
       this.setState({signedIn: user != null});
     });
   }
