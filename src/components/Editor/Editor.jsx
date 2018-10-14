@@ -2,6 +2,7 @@ import React, {
   Component
 } from 'react';
 import './Editor.css';
+import { Segment } from 'semantic-ui-react';
 import firebase from '../../firebase';
 
 class Editor extends Component {
@@ -25,7 +26,7 @@ class Editor extends Component {
     });
     firepad.on('ready', function () {
       if (firepad.isHistoryEmpty()) {
-        firepad.setHtml('<span style="font-size: 24px;">Rich-text editing with <span style="color: red">Firepad!</span></span><br/><br/>Collaborative-editing made easy.\n');
+        firepad.setHtml('<span style="font-size: 24px;">Lecture Tech</span><br/><br/>Classroom Collaboration\n');
       }
     });
   }
@@ -51,7 +52,9 @@ class Editor extends Component {
   render() {
     return (
       <div>
-        <div id="firepad-container"> </div>
+        <Segment>
+          <div id="firepad-container"> </div>
+        </Segment>
       </div>
     );
   }
