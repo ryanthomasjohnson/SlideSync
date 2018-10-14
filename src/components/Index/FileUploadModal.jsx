@@ -7,13 +7,8 @@ import FileUploadForm from './FileUploadForm';
 export default class FileUploadModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {open: false};
     this.db = firebase.firestore();
     this.storage = firebase.storage();
-  }
-
-  toggleOpen() {
-    this.setState(state => ({ open: !state.open }));
   }
 
   uploadFile(title, data) {
@@ -43,15 +38,9 @@ export default class FileUploadModal extends React.Component {
   }
 
   render() {
-    const { open } = this.state;
-    const menuItem = (
-      <Menu.Item as="a" onClick={() => this.toggleOpen()}>
-        <Icon name="upload" />
-        New Lecture
-      </Menu.Item>
-    );
+    const { trigger } = this.props;
     return (
-      <Modal size="mini" open={open} trigger={menuItem} dimmer="blurring" onClose={() => this.toggleOpen()}>
+      <Modal size="mini" trigger={trigger} dimmer="blurring" closeIcon>
         <Modal.Header>Upload Lecture</Modal.Header>
         <Modal.Content scrolling>
           <Modal.Description>
