@@ -4,6 +4,7 @@ import { Grid, Button, Header, Icon, Image, Menu, Segment, Sidebar } from 'seman
 
 import firebase from '../../firebase';
 import IndexTable from './IndexTable';
+import FileUploadModal from './FileUploadModal';
 
 
 export default class IndexContainer extends React.Component {
@@ -20,8 +21,8 @@ export default class IndexContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.collectionRef.get().then((collection) => {
-      this.setState({ lectures: collection.docs });
+    this.collectionRef.onSnapshot((snap) => {
+      this.setState({ lectures: snap.docs });
     });
   }
 
@@ -45,10 +46,7 @@ export default class IndexContainer extends React.Component {
             <Menu.Item as="a" onClick={() => this.setState({ menuVisible: !menuVisible })}>
               <Icon name="chevron left" />
             </Menu.Item>
-            <Menu.Item as="a">
-              <Icon name="upload" />
-              New Lecture
-            </Menu.Item>
+            <FileUploadModal />
           </Sidebar>
 
           <Sidebar.Pusher dimmed={menuVisible}>
