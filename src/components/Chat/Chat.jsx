@@ -138,7 +138,6 @@ class ChatApp extends Component {
   render() {
     var loginOrChat;
     const messages = this.state.messages.map((message, index) => {
-      console.log(message);
       return (
         <Segment raised compact size="tiny" key={index}>
           <Comment>
