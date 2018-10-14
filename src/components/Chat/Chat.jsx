@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 // import NameBox from './NameBox.js';
 import { Comment, Button, Form, Segment, Divider, Input, Grid } from 'semantic-ui-react';
 import Chat from 'twilio-chat';
+import { loginUtility } from '../Login/LoginUtility';
 const moment = require('moment');
 
 class ChatApp extends Component {
   constructor(props) {
     super(props);
-    const name = localStorage.getItem('name') || '';
+    const name = '';
 
     const loggedIn = name !== '';
     this.state = {
@@ -25,6 +26,10 @@ class ChatApp extends Component {
     if (this.state.loggedIn) {
       this.getToken();
     }
+    loginUtility.onChange(() => {
+      this.setState({ name: loginUtility.getUid(), loggedIn: true });
+      this.getToken();
+    });
   };
 
   onNameChanged = event => {
@@ -109,10 +114,26 @@ class ChatApp extends Component {
   };
 
   messagesLoaded = messagePage => {
+    messagePage.items.forEach((message) => {
+      loginUtility.getUserInfo(message.author).then((user) => {
+        if (user != undefined && user.data() != undefined) {
+          message.displayName = user.data().displayName;
+          message.photoURL = user.data().photoURL;
+          this.forceUpdate();
+        }
+      });
+    });
     this.setState({ messages: messagePage.items.reverse() });
   };
 
   messageAdded = message => {
+    loginUtility.getUserInfo(message.author).then((user) => {
+      if (user != undefined && user.data() != undefined) {
+        message.displayName = user.data().displayName;
+        message.photoURL = user.data().photoURL;
+        this.forceUpdate();
+      }
+    });
     this.setState((prevState, props) => ({
       messages: [message, ...prevState.messages]
     }));
@@ -141,19 +162,13 @@ class ChatApp extends Component {
       return (
         <Segment raised compact size="tiny" key={index}>
           <Comment>
+            <Comment.Avatar src={message.photoURL} />
             <Comment.Content>
-              <Comment.Author as="a">{message.author}</Comment.Author>
+              <Comment.Author as="a">{message.displayName}</Comment.Author>
               <Comment.Metadata>
                 <div>{moment(message.timestamp).fromNow()}</div>
               </Comment.Metadata>
               <Comment.Text>{message.body}</Comment.Text>
-              {
-                message.author === this.state.name && (
-                  <Comment.Actions>
-                    <Comment.Action>Delete</Comment.Action>
-                  </Comment.Actions>
-                )
-              }
             </Comment.Content>
           </Comment>
         </Segment>
@@ -190,13 +205,13 @@ class ChatApp extends Component {
     } else {
       loginOrChat = (
         <div>
-          <Form>
+          {/* <Form>
             <Form.Field onChange={this.onNameChanged}>
               <label>Name</label>
               <input placeholder='Enter Name' />
             </Form.Field>
             <Button type="submit" onClick={this.logIn} >Submit</Button>
-          </Form>
+          </Form> */}
           {/* <NameBox
             name={this.state.name}
             onNameChanged={this.onNameChanged}

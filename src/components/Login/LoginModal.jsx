@@ -17,10 +17,10 @@ export default class LoginModal extends React.Component {
   componentDidMount() {
     this.unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
       const { onLogin } = this.props;
-      if(onLogin) {
+      if (onLogin) {
         onLogin(user);
       }
-      this.setState({signedIn: user != null});
+      this.setState({ signedIn: user != null });
     });
   }
 
@@ -34,7 +34,7 @@ export default class LoginModal extends React.Component {
       return (
         <p>
           You are already signed in as
-          { ' ' + loginUtility.getDisplayName() }
+          {' ' + loginUtility.getDisplayName()}
           !
         </p>
       );
