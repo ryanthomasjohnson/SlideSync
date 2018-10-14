@@ -118,7 +118,7 @@ export default class SlidesContainer extends React.Component {
 
     return (
       <div className="SlidesContainer">
-        <Segment.Group>
+        <Segment.Group raised>
           <SlidesHeader
             title={title}
             slidePos={slidePos}

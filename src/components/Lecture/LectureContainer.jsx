@@ -18,7 +18,7 @@ export default class LectureContainer extends React.Component {
     const { match } = this.props;
 
     return (
-      <div className="LectureContainer">
+      <div className="LectureContainer" style={ {backgroundColor: 'MintCream'} }>
         <Grid columns={2} padded>
           <Grid.Row>
             <Grid.Column>

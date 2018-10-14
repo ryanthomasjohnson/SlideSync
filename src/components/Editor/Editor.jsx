@@ -52,7 +52,7 @@ class Editor extends Component {
   render() {
     return (
       <div>
-        <Segment>
+        <Segment raised>
           <div id="firepad-container"> </div>
         </Segment>
       </div>
