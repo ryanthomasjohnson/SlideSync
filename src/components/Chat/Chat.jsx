@@ -196,10 +196,6 @@ class ChatApp extends Component {
             {messages}
           </Comment.Group>
 
-          <form onSubmit={this.logOut}>
-            <button>Log out</button>
-          </form>
-          <p>Logged in as {this.state.name}</p>
         </div>
       );
     } else {

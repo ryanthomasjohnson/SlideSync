@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid, Message } from 'semantic-ui-react';
+import { Grid, Message, Header, Icon } from 'semantic-ui-react';
 
 import firebase from '../../firebase';
 import IndexMenu from './IndexMenu';
@@ -56,7 +56,9 @@ export default class IndexContainer extends React.Component {
           <Grid.Row>
             <Grid.Column></Grid.Column>
             <Grid.Column width={8}>
-              <h1 style={{ textAlign: 'center', marginTop: '50px' }}>MHacks XI</h1>
+              <Header as="h1" textAlign='center' style={{ textAlign: 'center', marginTop: '50px' }}>
+                <Header.Content>SlideSync</Header.Content>
+              </Header>
             </Grid.Column>
             <Grid.Column></Grid.Column>
           </Grid.Row>
