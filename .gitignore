@@ -94,3 +94,7 @@ typings/
 ## Python
 
 env/
+
+build/
+
+.firebase
