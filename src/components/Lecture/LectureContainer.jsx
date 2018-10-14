@@ -53,7 +53,6 @@ export default class LectureContainer extends React.Component {
   }
 
   handleClose = () => this.setState({ isOpen: false })
-
   openCreateForm = () => this.setState({createQuiz:true})
 
   createForm = () => {
@@ -65,16 +64,11 @@ export default class LectureContainer extends React.Component {
 
   render() {
     const { match } = this.props;
-    const { quiz, isOpen, createQuiz,visible } = this.state;
-
-
+    const { quiz, isOpen, createQuiz, visible } = this.state;
 
     return (
       <div className="LectureContainer" style={{ backgroundColor: 'MintCream' }}>
-
-        <Button onClick={() => {this.openCreateForm()}}>
-          Create Quiz
-        </Button>
+        
 
         <Modal open={createQuiz}>
           <Modal.Header>Create a new quiz</Modal.Header>
@@ -90,13 +84,13 @@ export default class LectureContainer extends React.Component {
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
-            <Button onClick={() => {this.createForm()}}>
+            <Button onClick={() => { this.createForm()}}>
               Submit
             </Button>
           </Modal.Actions>
         </Modal>
 
-        <LectureMenu />
+        <LectureMenu handleQuiz={() => { this.openCreateForm()}}/>
         <Sidebar.Pushable>
           <Sidebar
             animation="overlay"

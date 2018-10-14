@@ -20,11 +20,6 @@ export default function LectureQuiz({ quiz, handleChange, open, handleClose }) {
     ));
   }
 
-
-
-
-
-
   return (
     <Modal open={open}>
       <Modal.Header>{quiz.question}</Modal.Header>
