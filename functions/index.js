@@ -7,16 +7,17 @@ const AccessToken = require('twilio').jwt.AccessToken;
 const ChatGrant = AccessToken.IpMessagingGrant;
 
 
-let config = {
-  accountSid: 'ACfadb650fc47f730e09bcfc240a6063b0',
-  chatServiceSid: 'IS95938c018c0b4a57b457665d394f4358',
-  apiKey: 'SKc216c19799a909a490bdaf56e8915064',
-  apiSecret: 'Y00iRXlhRS5zj8vzJMIy74ueHJxgIZxc'
-}
+
 
 exports.getToken = functions.https.onRequest((req, res) => {
   return cors(req, res, () => {
 
+    let config = {
+      accountSid: functions.config().twilio.accountsid,
+      chatServiceSid: functions.config().twilio.chatservicesid,
+      apiKey: functions.config().twilio.apikey,
+      apiSecret: functions.config().twilio.apisecret
+    }
     const identity = req.query.identity;
     // console.log(req);
     // console.log(req.query.identity)
