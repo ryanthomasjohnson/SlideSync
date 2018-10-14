@@ -147,6 +147,13 @@ class ChatApp extends Component {
                 <div>{moment(message.timestamp).fromNow()}</div>
               </Comment.Metadata>
               <Comment.Text>{message.body}</Comment.Text>
+              {
+                message.author === this.state.name && (
+                  <Comment.Actions>
+                    <Comment.Action>Delete</Comment.Action>
+                  </Comment.Actions>
+                )
+              }
             </Comment.Content>
           </Comment>
         </Segment>
@@ -157,7 +164,7 @@ class ChatApp extends Component {
         <div>
           <Divider />
           <Grid>
-            <Grid.Row columns="2" padded>
+            <Grid.Row columns="2">
               <Grid.Column width="4">
                 <h2>Chat</h2>
               </Grid.Column>
@@ -170,7 +177,7 @@ class ChatApp extends Component {
             </Grid.Row>
           </Grid>
 
-          <Comment.Group minimal size="tiny">
+          <Comment.Group size="tiny">
             {messages}
           </Comment.Group>
 

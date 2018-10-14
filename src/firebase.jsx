@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/storage';
 import 'firebase/database';
-import 'firebase/auth'
+import 'firebase/auth';
 
 // Initialize Firebase
 const config = {
@@ -30,7 +30,7 @@ const FIREBASE_UI_CONFIG = {
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
   ],
   callbacks: {
-    signInSuccessWithAuthResult: () => false
+    signInSuccessWithAuthResult: () => false,
   },
 };
 

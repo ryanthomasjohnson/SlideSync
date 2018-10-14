@@ -2,7 +2,9 @@ import React, {
   Component
 } from 'react';
 import './Editor.css';
-import { Segment, Header } from 'semantic-ui-react';
+import './firepadUserList.css'
+import FirepadUserList from './firepadUserList';
+import { Segment, Header, Button, Grid } from 'semantic-ui-react';
 import firebase from '../../firebase';
 
 class Editor extends Component {
@@ -23,7 +25,11 @@ class Editor extends Component {
     const firepad = window.Firepad.fromCodeMirror(firepadRef, codeMirror, {
       richTextToolbar: true,
       richTextShortcuts: true,
+      userId: localStorage.getItem('name') || 'Unknown',
     });
+    const firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
+      document.getElementById('userlist'), localStorage.getItem('name') || 'Unknown', localStorage.getItem('name') || 'Unknown');
+
     firepad.on('ready', function () {
       if (firepad.isHistoryEmpty()) {
         firepad.setHtml('<span style="font-size: 24px;">Lecture Tech</span><br/><br/>Classroom Collaboration\n');
@@ -54,12 +60,22 @@ class Editor extends Component {
       <div>
         <Segment.Group raised>
           <Segment>
-            <Header size="huge">
-              Notes
-            </Header>
+            <Grid>
+              <Grid.Row>
+                <Grid.Column width="2">
+                  <Header size="huge">
+                    Notes
+                  </Header>
+                </Grid.Column>
+                <Grid.Column width="14">
+                  <Button onClick={this.props.showUsers} floated="right">Show active users</Button>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+
           </Segment>
           <Segment>
-            <div id="firepad-container"> </div>
+            <div id="firepad-container" />
           </Segment>
         </Segment.Group>
       </div>
