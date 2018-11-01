@@ -1,6 +1,6 @@
 # SlideSync
 
-This project was coded as part of the University of Michgan's MHacks 11 Hackathon.
+This project was coded as part of the University of Michgan's MHacks 11 Hackathon. Check out the Devpost here: https://devpost.com/software/slidesync.
 
 As students at the University of Michigan, our lectures are often crowded with many students. We wanted to design a project that would help bring students in lecture together and leverage the amount of students to improve the learning experience.
 
